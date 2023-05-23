@@ -21,9 +21,9 @@
           placeholder="Search for movie!" />
         <div
           v-if="inputSearch.length > 0 && openSearch"
-          class="hideScroll md:w-1/2 absolute top-[110%] right-0 w-full bg-gray-800 rounded p-3 text-white overflow-y-scroll max-h-[80vh]">
+          class="hideScroll z-[1000] md:w-1/2 absolute top-[110%] right-0 w-full bg-gray-800 rounded p-3 text-white overflow-y-scroll max-h-[80vh]">
           <div class="" v-if="movieSearch.length === 0">Loading...</div>
-          <div class="rounded grid gap-2 z-[1000]" v-else>
+          <div class="rounded grid gap-2" v-else>
             <div class=" " v-for="movie in movieSearch" key="movie">
               <router-link
                 :to="{ name: 'Movie Details', params: { id: movie.id } }"
