@@ -22,21 +22,26 @@ onMounted(async () => {
 
 
 const movieInfo = ref("")
+const imgDone = ref(false)
 
-
+const render = () =>{
+  imgDone.value = true
+}
 </script>
 
 <template>
   <div v-if="movieInfo.length > 0" class="text-center text-white">Loading...</div>
   <div v-else class="text-white  md:flex gap-5">
     <div class="w-[50vh] max-w-[100%] mx-auto md:mx-0 ">
-      <img :src="`https://image.tmdb.org/t/p/w500${movieInfo.backdrop_path}`" alt="" class="w-full h-full rounded">
+      <img v-show="imgDone" @load="render" :src="`https://image.tmdb.org/t/p/w500${movieInfo.backdrop_path}`" alt="" class="w-full h-full rounded">
+      <img v-show="!imgDone"  src="/loading.gif" alt="" class="w-full h-full rounded">
+
     </div>
     <div class="flex-1">
       <h1 class="text-3xl font-bold my-5">{{ movieInfo.title }}</h1>
       <p>{{ movieInfo.overview }}</p>
       <p class="mt-3 font-bold">Want to See ? Check it out on <a :href="movieInfo.homepage" target="_blank"
-                                                                 class="text-blue-500">Website</a>
+      class="text-blue-500">Website</a>
       </p>
     </div>
   </div>

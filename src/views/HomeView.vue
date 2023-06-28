@@ -1,4 +1,25 @@
 <template>
+
+    <swiper v-if="movies.length > 0" class="mySwiper w-full h-[80vh] my-10">
+    <swiper-slide v-for="movie in movies" :key="movie" class="w-full h-full">
+      <router-link :to="{ name: 'Movie Details', params: { id: movie.id } }">
+        <div class="w-full h-[80vh] relative">
+          <img
+            :src="`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`"
+            alt=""
+            class="group-hover:blur-sm duration-200 w-full h-full object-cover" />
+          <div
+            class="absolute inset-0 bg-opacity-50 bg-gray-800 p-10 flex items-center">
+            <div class=" text-white w-[30ch] md:w-[50ch] lg:w-[100ch]">
+              <h2 class="text-4xl my-3 font-bold">{{ movie.title }}</h2>
+              <p class="truncate">{{ movie.overview }}</p>
+            </div>
+          </div>
+        </div>
+      </router-link>
+    </swiper-slide>
+  </swiper>
+
   <div v-if="movies.length < 0" class="text-white text-center text-3xl">
     Loading...
   </div>
@@ -27,6 +48,8 @@
 </template>
 
 <script setup>
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
 import axios from "axios";
 import { onMounted, ref } from "vue";
 
