@@ -5,27 +5,26 @@ import NotFound from "../views/404.vue";
 import MovieDetails from "@/views/MovieDetails.vue";
 
 const routes = [
-    {
-        path: "/",
-        name: "Home page",
-        component: HomeView,
-    },
-    {
-        path: "/movie/:id",
-        name: "Movie Details",
-        component: MovieDetails
-    },
-    //redirect
-    {
-        path: "/home",
-        redirect: "/",
-    },
-    {
-        path: "/:catchAll(.*)",
-        name: "Not Found",
-        component: NotFound,
-    },
-];
+  {
+    path: "/",
+    name: "Home page",
+    component: HomeView,
+  },
+  {
+    path: "/movie/:id",
+    name: "Movie Details",
+    component: MovieDetails,
+  },
+  //redirect
+  {
+    path: "/home",
+    redirect: "/",
+  },
+  {
+    path: "/:catchAll(.*)",
+    redirect: "/",
+  },
+]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
