@@ -90,7 +90,7 @@ const movieSearch = ref([])
 const handleClose = () => {
   setTimeout(() => {
     openSearch.value = false
-  }, 100)
+  }, 500)
 }
 </script>
 
