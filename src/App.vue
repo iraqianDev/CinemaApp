@@ -1,16 +1,15 @@
 <template>
-  <div class="container mx-auto max-w-[95%]">
+  <div class="">
     <nav
-      class="py-5 block text-center md:text-right md:flex items-center gap-2">
+      class="container px-2 md:px-0 mx-auto py-5 block text-center justify-between md:text-right md:flex items-center gap-2"
+    >
       <router-link to="/">
-        <h1
-          class="text-3xl font-bold text-red-600 flex-1 pb-2 mb-3 md:mb-0"
-          @click="openSearch = false">
+        <h1 class="text-3xl font-bold text-red-600 flex-1 pb-2 mb-3 md:mb-0">
           Cinema
         </h1>
       </router-link>
 
-      <div class="flex-1 relative">
+      <div class="relative flex-1">
         <input
           type="text"
           class="w-full md:w-1/2 p-2 outline-none rounded relative"
@@ -18,21 +17,33 @@
           v-model="inputSearch"
           @input="debouncedSearch"
           @click="openSearch = true"
-          placeholder="Search for movie!" />
+          @blur="handleClose"
+          placeholder="Search for movie!"
+        />
         <div
           v-if="inputSearch.length > 0 && openSearch"
-          class="hideScroll z-[1000] md:w-1/2 absolute top-[110%] right-0 w-full bg-gray-800 rounded p-3 text-white overflow-y-scroll max-h-[80vh]">
-          <div class="text-left" v-if="movieSearch.length === 0">Loading...</div>
+          class="hideScroll z-[1000] md:w-1/2 absolute top-[110%] right-0 w-full bg-gray-800 rounded p-3 text-white overflow-y-scroll max-h-[80vh]"
+        >
+          <div class="text-left" v-if="movieSearch.length === 0">
+            Loading...
+          </div>
           <div class="rounded grid gap-2" v-else>
             <div class=" " v-for="movie in movieSearch" key="movie">
               <router-link
                 :to="{ name: 'Movie Details', params: { id: movie.id } }"
                 @click="openSearch = false"
-                class="hover:bg-gray-700 duration-300 grid colsSpan gap-4 items-center p-2 rounded grid-flow-col">
+                class="hover:bg-gray-700 duration-300 grid colsSpan gap-4 items-center p-2 rounded grid-flow-col"
+              >
                 <div class="aspect-square w-[80px] h-[80px] relative">
                   <img
+                    @error="
+                      (e) => {
+                        e.target.src = `/error.jpeg`
+                      }
+                    "
                     :src="`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`"
-                    class="w-full h-full rounded" />
+                    class="w-full h-full rounded"
+                  />
                 </div>
                 <div class="text-left w-full">
                   <h3 class="text-sm sm:text-base">{{ movie.title }}</h3>
@@ -46,19 +57,19 @@
         </div>
       </div>
     </nav>
-    <div @click="openSearch = false">
+    <div>
       <router-view :key="$route.fullPath" />
     </div>
   </div>
 </template>
 
 <script setup>
-import axios from "axios";
-import { ref } from "vue";
+import axios from "axios"
+import { ref } from "vue"
 
-const debounce = require("lodash/debounce");
+const debounce = require("lodash/debounce")
 
-const openSearch = ref(false);
+const openSearch = ref(false)
 const search = async () => {
   let data = await axios.get("https://api.themoviedb.org/3/search/movie", {
     headers: {
@@ -68,14 +79,19 @@ const search = async () => {
     params: {
       query: inputSearch.value,
     },
-  });
-  let info = await data.data.results;
-  movieSearch.value = [...info];
-};
-const debouncedSearch = debounce(search, 300);
-const inputSearch = ref("");
+  })
+  let info = await data.data.results
+  movieSearch.value = [...info]
+}
+const debouncedSearch = debounce(search, 300)
+const inputSearch = ref("")
 
-const movieSearch = ref([]);
+const movieSearch = ref([])
+const handleClose = () => {
+  setTimeout(() => {
+    openSearch.value = false
+  }, 100)
+}
 </script>
 
 <style>
